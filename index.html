@@ -127,6 +127,7 @@
                     <button type="submit" id="submit-button" class="glow-button w-full md:w-auto flex items-center justify-center gap-2 bg-indigo-600 text-white font-bold px-8 py-4 rounded-lg hover:bg-indigo-500 transition-all duration-300 transform hover:scale-105">
                         <span id="button-text">أنشئ المقاطع</span>
                         <i id="button-icon" data-lucide="sparkles" class="w-5 h-5"></i>
+                        <div id="button-loader" class="w-5 h-5 border-2 border-t-white/50 border-white rounded-full spinner hidden"></div>
                     </button>
                 </form>
                 <p id="error-message" class="text-red-400 mt-4 text-center hidden"></p>
@@ -183,6 +184,7 @@
                 const submitButton = document.getElementById('submit-button');
                 const buttonText = document.getElementById('button-text');
                 const buttonIcon = document.getElementById('button-icon');
+                const buttonLoader = document.getElementById('button-loader');
                 const statusText = document.getElementById('status-text');
                 const statusDescription = document.getElementById('status-description');
                 const progressBar = document.getElementById('progress-bar');
@@ -321,10 +323,8 @@
                     // تحديث واجهة المستخدم لبدء المعالجة
                     submitButton.disabled = true;
                     buttonText.textContent = 'جاري المعالجة...';
-                    buttonIcon.remove();
-                    const loaderIcon = document.createElement('div');
-                    loaderIcon.className = 'w-5 h-5 border-2 border-t-transparent rounded-full spinner';
-                    submitButton.appendChild(loaderIcon);
+                    buttonIcon.classList.add('hidden');
+                    buttonLoader.classList.remove('hidden');
 
                     formSection.classList.add('hidden');
                     processingSection.classList.remove('hidden');
@@ -343,8 +343,8 @@
                     // إعادة الزر لحالته الأصلية
                     submitButton.disabled = false;
                     buttonText.textContent = 'أنشئ المقاطع';
-                    submitButton.querySelector('.spinner')?.remove();
-                    submitButton.appendChild(buttonIcon);
+                    buttonIcon.classList.remove('hidden');
+                    buttonLoader.classList.add('hidden');
                 }
 
 
