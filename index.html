@@ -78,6 +78,17 @@
         .fade-in {
             animation: fadeIn 0.5s ease-out forwards;
         }
+        
+        /* اهتزاز عند الخطأ */
+        @keyframes shake {
+          10%, 90% { transform: translate3d(-1px, 0, 0); }
+          20%, 80% { transform: translate3d(2px, 0, 0); }
+          30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+          40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .shake {
+          animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+        }
 
     </style>
 </head>
@@ -118,6 +129,7 @@
                         <i id="button-icon" data-lucide="sparkles" class="w-5 h-5"></i>
                     </button>
                 </form>
+                <p id="error-message" class="text-red-400 mt-4 text-center hidden"></p>
             </section>
             
             <!-- === Processing Section (Hidden by default) === -->
@@ -150,7 +162,7 @@
 
         <!-- === Footer === -->
         <footer class="text-center text-slate-500 mt-16">
-            <p>تم بناؤه بواسطة. Akroub</p>
+            <p>تم بناؤه بواسطة الذكاء الاصطناعي. Akroub - SHADOW-CORE MODE</p>
         </footer>
     </div>
 
@@ -176,6 +188,7 @@
                 const progressBar = document.getElementById('progress-bar');
                 const clipsGrid = document.getElementById('clips-grid');
                 const restartButton = document.getElementById('restart-button');
+                const errorMessage = document.getElementById('error-message');
 
                 // === State and Data ===
 
@@ -292,10 +305,16 @@
                 function handleFormSubmit(e) {
                     e.preventDefault();
                     const url = videoUrlInput.value.trim();
+                    
+                    // إخفاء رسائل الخطأ السابقة
+                    errorMessage.classList.add('hidden');
+                    videoForm.classList.remove('shake');
 
                     // تحقق بسيط من الرابط
                     if (!url || !url.startsWith('http')) {
-                        alert('الرجاء إدخال رابط فيديو صالح.');
+                        errorMessage.textContent = 'الرجاء إدخال رابط فيديو صالح يبدأ بـ http.';
+                        errorMessage.classList.remove('hidden');
+                        videoForm.classList.add('shake');
                         return;
                     }
 
